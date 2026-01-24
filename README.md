@@ -13,6 +13,9 @@ SMBv1:
   NB Computer Name:       DORVIN
   NB Domain Name:         DORVIN
   DNS Computer Name:      dorvin
+  DNS Domain Name:        dorvin
+  DNS Tree Name:          
+  Target Name:            
 ```
 
 ## Why this project is easy to learn

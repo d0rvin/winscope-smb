@@ -7,6 +7,7 @@ import (
 	"text/tabwriter"
 
 	"github.com/d0rvin/winscope-smb/pkg/protocol"
+	"github.com/d0rvin/winscope-smb/pkg/protocol/ntlmssp"
 	v1 "github.com/d0rvin/winscope-smb/pkg/protocol/smb/v1"
 	v2 "github.com/d0rvin/winscope-smb/pkg/protocol/smb/v2"
 )
@@ -69,10 +70,7 @@ func runV1(cfg protocol.Config) error {
 		fmt.Fprintf(w, "\tWindows Version:\t%s\n", os)
 	}
 
-	detail := challenge.TargetInfo.Parse()
-	fmt.Fprintf(w, "\tNB Computer Name:\t%s\n", detail.NBComputerName)
-	fmt.Fprintf(w, "\tNB Domain Name:\t%s\n", detail.NBDomainName)
-	fmt.Fprintf(w, "\tDNS Computer Name:\t%s\n", detail.DNSComputerName)
+	printTargetInfo(w, challenge.TargetInfo)
 	_ = w.Flush()
 	challenge.Version.ParseToOS()
 	fmt.Println()
@@ -102,12 +100,23 @@ func runV2(cfg protocol.Config) error {
 	if os, ok := challenge.Version.ParseToOS(); ok {
 		fmt.Fprintf(w, "\tWindows Version:\t%s\n", os)
 	}
-	detail := challenge.TargetInfo.Parse()
-	fmt.Fprintf(w, "\tNB Computer Name:\t%s\n", detail.NBComputerName)
-	fmt.Fprintf(w, "\tNB Domain Name:\t%s\n", detail.NBDomainName)
-	fmt.Fprintf(w, "\tDNS Computer Name:\t%s\n", detail.DNSComputerName)
+	printTargetInfo(w, challenge.TargetInfo)
 	_ = w.Flush()
 	fmt.Println()
 
 	return nil
+}
+
+func printTargetInfo(w *tabwriter.Writer, targetInfo *ntlmssp.AvPairSlice) {
+	if targetInfo == nil {
+		return
+	}
+
+	detail := targetInfo.Parse()
+	fmt.Fprintf(w, "\tNB Computer Name:\t%s\n", detail.NBComputerName)
+	fmt.Fprintf(w, "\tNB Domain Name:\t%s\n", detail.NBDomainName)
+	fmt.Fprintf(w, "\tDNS Computer Name:\t%s\n", detail.DNSComputerName)
+	fmt.Fprintf(w, "\tDNS Domain Name:\t%s\n", detail.DNSDomainName)
+	fmt.Fprintf(w, "\tDNS Tree Name:\t%s\n", detail.DNSTreeName)
+	fmt.Fprintf(w, "\tTarget Name:\t%s\n", detail.TargetName)
 }

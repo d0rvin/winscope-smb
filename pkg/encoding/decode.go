@@ -319,5 +319,5 @@ func resolveSliceParams(buf []byte, meta *Metadata) (int, *bytes.Buffer, error) 
 	if offset < 0 || length < 0 || offset+length > len(meta.ParentBuf) {
 		return 0, nil, fmt.Errorf("slice out of bounds: offset=%d length=%d buf len=%d", offset, length, len(meta.ParentBuf))
 	}
-	return length, bytes.NewBuffer(meta.ParentBuf[offset:offset+length]), nil
+	return length, bytes.NewBuffer(meta.ParentBuf[offset : offset+length]), nil
 }
