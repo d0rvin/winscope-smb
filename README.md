@@ -44,7 +44,7 @@ negotiation and NTLMSSP session setup.
 
 ## Install
 ```bash
-go install github.com/d0rvin/winscope-smb/cmd/winscope-smb@latest
+go install github.com/d0rvin/winscope-smb
 ```
 
 ## CLI usage
